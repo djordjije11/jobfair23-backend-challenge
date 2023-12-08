@@ -1,5 +1,21 @@
-# Backend challenge
-## Nordeus - Job Fair 2023
+# Nordeus - Job Fair 2023 - Backend challenge
+The auction process and user participation are implemented through WebSocket protocol to achieve real-time communication with the application system.
+
+## How to test the app
+The application can be tested using Postman.
+
+* register through an HTTP request to the REST API endpoint `/users/register` (e.g. `http://localhost:8080/users/register`) and save obtained <em>userId</em>
+* place the saved <em>userId</em> in the "Auth" header of the WebSocket session when connecting to the WebSocket endpoint `/auction/{auctionId}` (e.g. `ws://localhost:8080/auction/1`)
+* upon connection to the `/auction/{auctionId}` endpoint, the user is joined to the auction and receives updates for each new bid; to place your own bid, you only need to send a message (empty) over the socket session
+* after disconnecting from the `/auction/{auctionId}` endpoint, the user is unjoined from the auction
+* when the auction finishes, all users who have joined are automatically disconnected
+* to track all active auctions, just connect to the WebSocket endpoint `/auction/all`
+
+All challenge requests are covered and implemented.
+
+There are also REST API endpoints in the HttpController class to test each operation without WebSocket connection, but then the AuctionNotifierLogger should be injected as an AuctionNotifier implementation instead of SocketAuctionNotifier. You can achieve this by commenting the @Component annotation in the SocketAuctionNotifier.java file.
+
+## Nordeus Challenge README
 One of the core features in Top Eleven are auctions! 
 Millions of users are simultaneously competing to sign the best players on the market. 
 Can you make that feature?
@@ -52,11 +68,3 @@ Fork (or download) project. You will find the following:
 
 In the event that certain aspects of this challenge are unclear, 
 you have the liberty to decide how those ambiguous parts should function.
-
-### Submission format
-Please note that each challenge can be completed in less than 2 weeks (e.g. a few days) but we wanted to be mindful of your faculty obligations.
-
-The submission should be sent via email to _jobfair@nordeus.com_ with a link to your GitHub repository, or a zipped project. 
-Email subject should be: **Backend Challenge**.
-
-**Challenge is open until November 20, 2023** end of day. Good luck!
